@@ -336,6 +336,23 @@
       section[id] {
         scroll-margin-top: 132px; /* 64px navbar + 52px cat-nav + 16px breathing room */
       }
+
+        /* Disable hover effects on touch devices */
+        @media (hover: none) {
+          .item-card:hover,
+          .cat-card:hover,
+          .cat-pill:hover,
+          .btn-gold:hover,
+          .btn-ghost:hover,
+          .carousel-prev:hover,
+          .carousel-next:hover {
+            transform: none;
+            transition: none;
+            box-shadow: none;
+            border-color: rgba(255, 255, 255, 0.07);
+            background: #141210;
+          }
+        }
     </style>
   </head>
 

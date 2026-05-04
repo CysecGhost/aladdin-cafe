@@ -460,6 +460,24 @@
         opacity: 0.2;
         cursor: not-allowed;
       }
+
+      /* Disable hover effects on touch devices */
+      @media (hover: none) {
+        .item-card:hover,
+        .cat-card:hover,
+        .deal-card:hover,
+        .btn-gold:hover,
+        .btn-ghost:hover,
+        .add-btn:hover,
+        .btn-whatsapp:hover,
+        .btn-foodpanda:hover {
+          transform: none;
+          transition: none;
+          box-shadow: none;
+          background: inherit;
+          border-color: inherit;
+        }
+      }
     </style>
   </head>
 
