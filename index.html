@@ -1,0 +1,2313 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aladdin Cafe & Cream — Mardan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gold: "#d4a853",
+              "gold-light": "#e8c06e",
+              "gold-dim": "#a07c38",
+              bg: "#0c0b09",
+              card: "#141210",
+              "card-hover": "#1c1a16",
+            },
+            fontFamily: {
+              sans: ["Outfit", "sans-serif"],
+              serif: ["Cormorant Garamond", "serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: #0c0b09;
+        color: #e8e0d0;
+        font-family: "Outfit", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Grain texture overlay */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1000;
+        opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+      }
+
+      /* Gold gradient text */
+      .gold-text {
+        background: linear-gradient(
+          135deg,
+          #d4a853 0%,
+          #f0c97a 50%,
+          #d4a853 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Subtle card border */
+      .card-border {
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+      }
+
+      /* Gold border card */
+      .gold-card-border {
+        border: 0.5px solid rgba(212, 168, 83, 0.25);
+      }
+
+      /* Navbar backdrop */
+      .navbar-blur {
+        background: rgba(12, 11, 9, 0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 0.5px solid rgba(212, 168, 83, 0.15);
+      }
+
+      /* Hero */
+      .hero-bg-dots {
+        background-image: radial-gradient(
+          rgba(212, 168, 83, 0.07) 1px,
+          transparent 1px
+        );
+        background-size: 28px 28px;
+      }
+      .hero-img-glow {
+        position: absolute;
+        inset: -20%;
+        background: radial-gradient(
+          ellipse 70% 70% at 50% 55%,
+          rgba(212, 168, 83, 0.18) 0%,
+          rgba(180, 100, 20, 0.06) 45%,
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+      .hero-img-ring {
+        position: absolute;
+        inset: -8px;
+        border-radius: 50%;
+        border: 1px solid rgba(212, 168, 83, 0.2);
+        z-index: 0;
+      }
+      .hero-img-ring-outer {
+        position: absolute;
+        inset: -22px;
+        border-radius: 50%;
+        border: 0.5px solid rgba(212, 168, 83, 0.08);
+        z-index: 0;
+      }
+      /* Floating badge on image */
+      .float-badge {
+        position: absolute;
+        background: #141210;
+        border: 0.5px solid rgba(212, 168, 83, 0.25);
+        backdrop-filter: blur(10px);
+        border-radius: 14px;
+        padding: 10px 14px;
+        z-index: 2;
+        animation: floatY 3s ease-in-out infinite;
+      }
+      .float-badge-2 {
+        animation-delay: 1.5s;
+      }
+      @keyframes floatY {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-7px);
+        }
+      }
+      /* Eyebrow pill */
+      .eyebrow-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(212, 168, 83, 0.07);
+        border: 0.5px solid rgba(212, 168, 83, 0.2);
+        border-radius: 999px;
+        padding: 5px 14px 5px 8px;
+      }
+      .eyebrow-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #d4a853;
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+      }
+
+      /* Gold button */
+      .btn-gold {
+        background: linear-gradient(135deg, #d4a853, #c4943d);
+        color: #0c0b09;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 20px rgba(212, 168, 83, 0.25);
+      }
+      .btn-gold:hover {
+        background: linear-gradient(135deg, #e8c06e, #d4a853);
+        box-shadow: 0 6px 28px rgba(212, 168, 83, 0.4);
+        transform: translateY(-1px);
+      }
+
+      /* Ghost button */
+      .btn-ghost {
+        border: 0.5px solid rgba(212, 168, 83, 0.4);
+        color: #d4a853;
+        transition: all 0.2s ease;
+      }
+      .btn-ghost:hover {
+        border-color: rgba(212, 168, 83, 0.8);
+        background: rgba(212, 168, 83, 0.06);
+      }
+
+      /* Card hover */
+      .item-card {
+        background: #141210;
+        border: 0.5px solid rgba(255, 255, 255, 0.07);
+        transition: all 0.25s ease;
+      }
+      .item-card:hover {
+        background: #1c1a16;
+        border-color: rgba(212, 168, 83, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Category card */
+      .cat-card {
+        background: #141210;
+        border: 0.5px solid rgba(255, 255, 255, 0.07);
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+      .cat-card:hover {
+        background: #1c1a16;
+        border-color: rgba(212, 168, 83, 0.3);
+        transform: translateY(-3px);
+      }
+
+      /* Image placeholder */
+      .img-wrap {
+        width: 100%;
+        aspect-ratio: 4/3;
+        background: linear-gradient(145deg, #1a1713, #211e18);
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Announcement marquee */
+      @keyframes marquee {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      .marquee-track {
+        display: flex;
+        animation: marquee 28s linear infinite;
+        white-space: nowrap;
+      }
+
+      /* Separator dot */
+      .sep {
+        color: #d4a853;
+        margin: 0 1rem;
+        opacity: 0.5;
+      }
+
+      /* Section divider */
+      .section-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(212, 168, 83, 0.2),
+          transparent
+        );
+      }
+
+      /* Badge styles */
+      .badge-bestseller {
+        background: rgba(212, 168, 83, 0.12);
+        color: #d4a853;
+        border: 0.5px solid rgba(212, 168, 83, 0.3);
+      }
+      .badge-new {
+        background: rgba(34, 197, 94, 0.1);
+        color: #4ade80;
+        border: 0.5px solid rgba(74, 222, 128, 0.3);
+      }
+      .badge-deal {
+        background: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        border: 0.5px solid rgba(248, 113, 113, 0.3);
+      }
+      .badge-chef {
+        background: rgba(212, 168, 83, 0.08);
+        color: #d4a853;
+        border: 0.5px solid rgba(212, 168, 83, 0.2);
+      }
+
+      /* Stat card */
+      .stat-card {
+        background: rgba(20, 18, 16, 0.9);
+        border: 0.5px solid rgba(212, 168, 83, 0.15);
+        backdrop-filter: blur(10px);
+      }
+
+      /* Scroll fade in */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
+      }
+      .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Mobile menu */
+      #mobile-menu {
+        transition:
+          max-height 0.3s ease,
+          opacity 0.3s ease;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
+      #mobile-menu.open {
+        max-height: 400px;
+        opacity: 1;
+      }
+
+      /* Add button */
+      .add-btn {
+        background: rgba(212, 168, 83, 0.1);
+        border: 0.5px solid rgba(212, 168, 83, 0.3);
+        color: #d4a853;
+        transition: all 0.2s;
+      }
+      .add-btn:hover {
+        background: rgba(212, 168, 83, 0.2);
+        border-color: #d4a853;
+      }
+
+      /* Decorative line */
+      .deco-line {
+        width: 40px;
+        height: 1px;
+        background: linear-gradient(90deg, #d4a853, transparent);
+      }
+
+      /* WhatsApp btn */
+      .btn-whatsapp {
+        background: linear-gradient(135deg, #25d366, #1da851);
+        color: #fff;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.2);
+      }
+      .btn-whatsapp:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(37, 211, 102, 0.35);
+      }
+
+      /* Foodpanda btn */
+      .btn-foodpanda {
+        background: linear-gradient(135deg, #d70f64, #b00050);
+        color: #fff;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 20px rgba(215, 15, 100, 0.2);
+      }
+      .btn-foodpanda:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(215, 15, 100, 0.35);
+      }
+
+      /* Deal card */
+      .deal-card {
+        background: linear-gradient(135deg, #141210 0%, #1a1713 100%);
+        border: 0.5px solid rgba(212, 168, 83, 0.2);
+        transition: all 0.25s ease;
+      }
+      .deal-card:hover {
+        border-color: rgba(212, 168, 83, 0.4);
+        box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
+      }
+
+      /* Strikethrough price */
+      .price-strike {
+        text-decoration: line-through;
+        color: rgba(232, 224, 208, 0.35);
+      }
+
+      /* Hamburger icon lines */
+      .ham-line {
+        display: block;
+        width: 22px;
+        height: 1.5px;
+        background: #d4a853;
+        transition: all 0.3s ease;
+        transform-origin: center;
+      }
+      #ham-btn.open .ham-line:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      #ham-btn.open .ham-line:nth-child(2) {
+        opacity: 0;
+      }
+      #ham-btn.open .ham-line:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      .carousel-track-wrap {
+        overflow: hidden;
+        position: relative;
+      }
+      .carousel-track {
+        display: flex;
+        gap: 16px;
+        transition: transform 0.35s ease;
+        will-change: transform;
+      }
+      .carousel-item {
+        flex: 0 0 calc(25% - 12px);
+        min-width: 220px;
+      }
+      @media (max-width: 768px) {
+        .carousel-item {
+          flex: 0 0 calc(75vw - 40px);
+        }
+      }
+      @media (max-width: 480px) {
+        .carousel-item {
+          flex: 0 0 calc(85vw - 40px);
+        }
+      }
+      .carousel-prev,
+      .carousel-next {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 0.5px solid rgba(212, 168, 83, 0.3);
+        color: #d4a853;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+      .carousel-prev:hover,
+      .carousel-next:hover {
+        background: rgba(212, 168, 83, 0.1);
+        border-color: rgba(212, 168, 83, 0.6);
+      }
+      .carousel-prev:disabled,
+      .carousel-next:disabled {
+        opacity: 0.2;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar-blur fixed top-0 left-0 right-0 z-50">
+      <div class="max-w-6xl mx-auto px-5 md:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <a href="#hero" class="flex items-center gap-3 group">
+            <div
+              class="w-9 h-9 rounded-full flex items-center justify-center"
+              style="background: linear-gradient(135deg, #d4a853, #a07c38)"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"
+                  fill="#0c0b09"
+                />
+                <circle cx="12" cy="9" r="2.5" fill="#0c0b09" />
+              </svg>
+            </div>
+            <div>
+              <div
+                class="font-serif font-semibold text-base leading-tight"
+                style="color: #d4a853"
+              >
+                Aladdin
+              </div>
+              <div
+                class="text-xs font-light tracking-widest"
+                style="
+                  color: rgba(212, 168, 83, 0.55);
+                  font-size: 9px;
+                  letter-spacing: 0.15em;
+                "
+              >
+                CAFE & CREAM
+              </div>
+            </div>
+          </a>
+
+          <!-- Desktop nav -->
+          <div class="hidden md:flex items-center gap-8">
+            <a
+              href="menu.html"
+              class="text-sm font-light text-white/60 hover:text-gold transition-colors duration-200"
+              >Menu</a
+            >
+            <a
+              href="#deals"
+              class="text-sm font-light text-white/60 hover:text-gold transition-colors duration-200"
+              >Deals</a
+            >
+            <a
+              href="#about"
+              class="text-sm font-light text-white/60 hover:text-gold transition-colors duration-200"
+              >About</a
+            >
+            <a
+              href="#find-us"
+              class="text-sm font-light text-white/60 hover:text-gold transition-colors duration-200"
+              >Find Us</a
+            >
+          </div>
+
+          <!-- CTA + Hamburger -->
+          <div class="flex items-center gap-4">
+            <a
+              href="#order"
+              class="hidden md:block btn-gold text-sm px-5 py-2 rounded-full"
+              >Order Now</a
+            >
+            <button
+              id="ham-btn"
+              class="md:hidden flex flex-col gap-[5px] p-2"
+              aria-label="Toggle menu"
+            >
+              <span class="ham-line"></span>
+              <span class="ham-line"></span>
+              <span class="ham-line"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu">
+          <div
+            class="py-4 space-y-1 border-t"
+            style="border-color: rgba(212, 168, 83, 0.1)"
+          >
+            <a
+              href="menu.html"
+              class="mobile-link block px-3 py-2.5 text-sm text-white/70 hover:text-gold transition-colors"
+              >Menu</a
+            >
+            <a
+              href="#deals"
+              class="mobile-link block px-3 py-2.5 text-sm text-white/70 hover:text-gold transition-colors"
+              >Deals</a
+            >
+            <a
+              href="#about"
+              class="mobile-link block px-3 py-2.5 text-sm text-white/70 hover:text-gold transition-colors"
+              >About</a
+            >
+            <a
+              href="#find-us"
+              class="mobile-link block px-3 py-2.5 text-sm text-white/70 hover:text-gold transition-colors"
+              >Find Us</a
+            >
+            <div class="px-3 pt-2">
+              <a
+                href="#order"
+                class="mobile-link btn-gold block text-center text-sm px-5 py-2.5 rounded-full"
+                >Order Now</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section
+      id="hero"
+      class="relative min-h-screen flex items-center pt-16 overflow-hidden"
+    >
+      <!-- BG image — swap src with your actual burger photo, ideally landscape with burger on right side -->
+      <!-- PLACEHOLDER: dark gradient stands in until you add burger.jpg -->
+      <div class="absolute inset-0 z-0">
+        <!-- Fallback gradient sits BEHIND the image -->
+        <div
+          class="absolute inset-0"
+          style="
+            background:
+              radial-gradient(
+                ellipse 55% 70% at 80% 55%,
+                rgba(160, 90, 20, 0.35) 0%,
+                rgba(12, 11, 9, 0) 65%
+              ),
+              #0c0b09;
+          "
+        ></div>
+        <!-- Image on top of fallback -->
+        <img
+          src="images/burger.jpg"
+          alt=""
+          aria-hidden="true"
+          class="absolute inset-0 w-full h-full object-cover"
+          style="object-position: 55% center"
+        />
+      </div>
+
+      <!-- Overlay: heavy dark on left fading to transparent on right so burger shows through -->
+      <div
+        class="absolute inset-0 z-1 pointer-events-none block md:hidden"
+        style="
+          background: linear-gradient(
+            to top,
+            rgba(12, 11, 9, 0.75) 40%,
+            rgba(12, 11, 9, 0.5) 60%,
+            rgba(12, 11, 9, 0.25) 80%,
+            rgba(12, 11, 9, 0) 100%
+          );
+        "
+      ></div>
+
+      <div
+        class="absolute inset-0 z-1 pointer-events-none hidden md:block"
+        style="
+          background: linear-gradient(
+            100deg,
+            rgba(12, 11, 9, 0.97) 0%,
+            rgba(12, 11, 9, 0.92) 30%,
+            rgba(12, 11, 9, 0.6) 58%,
+            rgba(12, 11, 9, 0.15) 75%,
+            rgba(12, 11, 9, 0.05) 100%
+          );
+        "
+      ></div>
+
+      <!-- Subtle dot grid on top, left half only -->
+      <div
+        class="absolute inset-0 z-1 pointer-events-none hero-bg-dots opacity-45"
+        style="
+          mask-image: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 0) 55%
+          );
+          -webkit-mask-image: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 0) 55%
+          );
+        "
+      ></div>
+
+      <!-- Gold ambient on left -->
+      <div
+        class="absolute top-0 left-0 w-1/2 h-full z-1 pointer-events-none"
+        style="
+          background: radial-gradient(
+            ellipse 80% 60% at 10% 60%,
+            rgba(212, 168, 83, 0.06) 0%,
+            transparent 70%
+          );
+        "
+      ></div>
+
+      <!-- Content -->
+      <div class="relative z-10 max-w-6xl mx-auto px-5 md:px-8 w-full">
+        <div class="max-w-lg py-24 md:py-32">
+          <!-- Eyebrow -->
+          <div class="eyebrow-pill mb-7 w-fit">
+            <div class="eyebrow-dot"></div>
+            <span
+              class="text-xs font-medium tracking-wide"
+              style="color: #d4a853"
+              >Mardan's Favourite Cafe</span
+            >
+          </div>
+
+          <!-- Headline -->
+          <h1
+            class="mb-5 leading-[0.98]"
+            style="font-size: clamp(2.8rem, 6vw, 5rem); color: #f0ead8"
+          >
+            <span class="font-serif italic gold-text">Good food.</span><br />
+            <span
+              class="font-bold"
+              style="color: #e8e0d0; letter-spacing: -0.02em"
+              >Good mood.</span
+            >
+          </h1>
+
+          <p
+            class="font-light leading-relaxed mb-9 max-w-sm"
+            style="font-size: 1rem; color: rgba(232, 224, 208, 0.5)"
+          >
+            Burgers, shakes & ice creams the whole family will love — fresh
+            every day, right here in Mardan.
+          </p>
+
+          <!-- CTAs -->
+          <div class="flex items-center gap-3 flex-wrap mb-12">
+            <a
+              href="menu.html"
+              class="btn-gold px-7 py-3.5 rounded-xl text-sm font-semibold inline-flex items-center gap-2"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              Explore Menu
+            </a>
+            <a
+              href="https://wa.me/923348901413"
+              target="_blank"
+              class="btn-ghost px-7 py-3.5 rounded-xl text-sm font-semibold inline-flex items-center gap-2"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                style="color: #d4a853"
+              >
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                />
+              </svg>
+              Order on WhatsApp
+            </a>
+          </div>
+
+          <!-- Stats -->
+          <div class="flex items-center gap-6 flex-wrap">
+            <div>
+              <div class="font-bold text-2xl" style="color: #d4a853">40+</div>
+              <div
+                class="text-xs font-light mt-0.5"
+                style="color: rgba(232, 224, 208, 0.35)"
+              >
+                Menu Items
+              </div>
+            </div>
+            <div
+              class="w-px h-8"
+              style="background: rgba(255, 255, 255, 0.08)"
+            ></div>
+            <div>
+              <div class="font-bold text-2xl" style="color: #d4a853">4.0★</div>
+              <div
+                class="text-xs font-light mt-0.5"
+                style="color: rgba(232, 224, 208, 0.35)"
+              >
+                Rating
+              </div>
+            </div>
+            <div
+              class="w-px h-8"
+              style="background: rgba(255, 255, 255, 0.08)"
+            ></div>
+            <div>
+              <div class="font-bold text-2xl" style="color: #d4a853">12–11</div>
+              <div
+                class="text-xs font-light mt-0.5"
+                style="color: rgba(232, 224, 208, 0.35)"
+              >
+                Open Daily
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom fade into next section -->
+      <div
+        class="absolute bottom-0 left-0 right-0 h-28 z-10 pointer-events-none"
+        style="background: linear-gradient(to bottom, transparent, #0c0b09)"
+      ></div>
+    </section>
+
+    <!-- ANNOUNCEMENT BAR -->
+    <div
+      style="
+        background: rgba(212, 168, 83, 0.06);
+        border-top: 0.5px solid rgba(212, 168, 83, 0.2);
+        border-bottom: 0.5px solid rgba(212, 168, 83, 0.2);
+      "
+      class="py-3 overflow-hidden"
+    >
+      <div class="marquee-track">
+        <!-- Duplicate for seamless loop -->
+        <span
+          class="inline-flex items-center gap-4 px-6 text-sm font-light text-white/60"
+        >
+          <span
+            class="inline-block px-2 py-0.5 rounded-sm text-xs font-medium badge-deal"
+            style="font-size: 10px"
+            >🔥 HOT</span
+          >
+          Buy any 2 shakes and get a scoop free — this weekend only
+          <span class="sep">✦</span>
+          <span
+            class="inline-block px-2 py-0.5 rounded-sm text-xs font-medium badge-bestseller"
+            style="font-size: 10px"
+            >✨ NEW</span
+          >
+          Double Decker Burger is now on the menu
+          <span class="sep">✦</span>
+          <span
+            class="inline-block px-2 py-0.5 rounded-sm text-xs font-medium badge-new"
+            style="font-size: 10px"
+            >📦 DEAL</span
+          >
+          Family Bundle starting from Rs. 999 — order on WhatsApp
+          <span class="sep">✦</span>
+          Follow us on Tiktok @aladdincafeandcream for daily deals
+          <span class="sep">✦</span>
+        </span>
+        <span
+          class="inline-flex items-center gap-4 px-6 text-sm font-light text-white/60"
+          aria-hidden="true"
+        >
+          <span
+            class="inline-block px-2 py-0.5 rounded-sm text-xs font-medium badge-deal"
+            style="font-size: 10px"
+            >🔥 HOT</span
+          >
+          Buy any 2 shakes and get a scoop free — this weekend only
+          <span class="sep">✦</span>
+          <span
+            class="inline-block px-2 py-0.5 rounded-sm text-xs font-medium badge-bestseller"
+            style="font-size: 10px"
+            >✨ NEW</span
+          >
+          Double Decker Burger is now on the menu
+          <span class="sep">✦</span>
+          <span
+            class="inline-block px-2 py-0.5 rounded-sm text-xs font-medium badge-new"
+            style="font-size: 10px"
+            >📦 DEAL</span
+          >
+          Family Bundle starting from Rs. 999 — order on WhatsApp
+          <span class="sep">✦</span>
+          Follow us on Tiktok @aladdincafeandcream for daily deals
+          <span class="sep">✦</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- BROWSE BY CATEGORY -->
+    <section
+      id="categories"
+      class="py-20 md:py-28 max-w-6xl mx-auto px-5 md:px-8"
+    >
+      <div class="text-center mb-14 fade-up">
+        <div class="inline-flex items-center gap-2.5 mb-4">
+          <div class="deco-line"></div>
+          <span
+            class="text-xs tracking-[0.2em] uppercase font-light"
+            style="color: #d4a853"
+            >Browse</span
+          >
+          <div
+            class="deco-line"
+            style="background: linear-gradient(90deg, transparent, #d4a853)"
+          ></div>
+        </div>
+        <h2
+          class="font-bold text-4xl md:text-5xl"
+          style="color: #e8e0d0; letter-spacing: -0.02em"
+        >
+          What are you <span class="gold-text">craving?</span>
+        </h2>
+      </div>
+
+      <div class="relative">
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-categories">
+            <!-- cat 1 -->
+            <div
+              class="carousel-item cat-card rounded-2xl p-6 text-center"
+              style="min-width: 200px"
+            >
+              <a href="menu.html#steaks" class="block">
+                <div class="w-14 h-14 mx-auto rounded-xl overflow-hidden mb-4">
+                  <img
+                    src="images/steaks-cat.jpg"
+                    alt="Steaks"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 class="font-semibold text-white/90 mb-1">Steaks</h3>
+                <p class="text-xs text-white/40 mb-3 font-light">
+                  Juicy grilled cuts
+                </p>
+                <span
+                  class="text-xs px-2.5 py-1 rounded-full badge-bestseller font-light"
+                  >5 items</span
+                >
+              </a>
+            </div>
+            <!-- cat 2 -->
+            <div
+              class="carousel-item cat-card rounded-2xl p-6 text-center"
+              style="min-width: 200px"
+            >
+              <a href="menu.html#burgers" class="block">
+                <div
+                  class="w-14 h-14 mx-auto rounded-xl overflow-hidden mb-4"
+                  style="background: rgba(212, 168, 83, 0.08)"
+                >
+                  <img
+                    src="images/burger-cat.jpg"
+                    alt="Burger"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 class="font-semibold text-white/90 mb-1">Burgers</h3>
+                <p class="text-xs text-white/40 mb-3 font-light">
+                  Hand-smashed patties
+                </p>
+                <span
+                  class="text-xs px-2.5 py-1 rounded-full badge-new font-light"
+                  >6 items</span
+                >
+              </a>
+            </div>
+            <!-- cat 3 -->
+            <div
+              class="carousel-item cat-card rounded-2xl p-6 text-center"
+              style="min-width: 200px"
+            >
+              <a href="menu.html#pizza" class="block">
+                <div class="w-14 h-14 mx-auto rounded-xl overflow-hidden mb-4">
+                  <img
+                    src="images/pizza-cat.jpg"
+                    alt="Pizza"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 class="font-semibold text-white/90 mb-1">Pizza</h3>
+                <p class="text-xs text-white/40 mb-3 font-light">
+                  Fresh out the oven
+                </p>
+                <span
+                  class="text-xs px-2.5 py-1 rounded-full badge-chef font-light"
+                  >6 sizes</span
+                >
+              </a>
+            </div>
+            <!-- cat 4 -->
+            <div
+              class="carousel-item cat-card rounded-2xl p-6 text-center"
+              style="min-width: 200px"
+            >
+              <a href="menu.html#chinese" class="block">
+                <div class="w-14 h-14 mx-auto rounded-xl overflow-hidden mb-4">
+                  <img
+                    src="images/chinese-cat.jpg"
+                    alt="Chinese"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 class="font-semibold text-white/90 mb-1">Chinese</h3>
+                <p class="text-xs text-white/40 mb-3 font-light">
+                  Noodles & fried rice
+                </p>
+                <span
+                  class="text-xs px-2.5 py-1 rounded-full badge-new font-light"
+                  >5 items</span
+                >
+              </a>
+            </div>
+            <!-- cat 5 -->
+            <div
+              class="carousel-item cat-card rounded-2xl p-6 text-center"
+              style="min-width: 200px"
+            >
+              <a href="menu.html#broast" class="block">
+                <div class="w-14 h-14 mx-auto rounded-xl overflow-hidden mb-4">
+                  <img
+                    src="images/broast-cat.jpg"
+                    alt="Broast"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 class="font-semibold text-white/90 mb-1">Broast</h3>
+                <p class="text-xs text-white/40 mb-3 font-light">
+                  Crispy broasted chicken
+                </p>
+                <span
+                  class="text-xs px-2.5 py-1 rounded-full badge-deal font-light"
+                  >5 items</span
+                >
+              </a>
+            </div>
+            <!-- cat 6 -->
+            <div
+              class="carousel-item cat-card rounded-2xl p-6 text-center"
+              style="min-width: 200px"
+            >
+              <a href="menu.html#drinks" class="block">
+                <div class="w-14 h-14 mx-auto rounded-xl overflow-hidden mb-4">
+                  <img
+                    src="images/drinks-cat.jpg"
+                    alt="Drinks"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Shakes & Drinks
+                </h3>
+                <p class="text-xs text-white/40 mb-3 font-light">
+                  Shakes, mojitos, slush
+                </p>
+                <span
+                  class="text-xs px-2.5 py-1 rounded-full badge-new font-light"
+                  >5 items</span
+                >
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-5">
+          <button
+            class="carousel-prev"
+            data-carousel="categories"
+            aria-label="Previous"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="15,18 9,12 15,6" />
+            </svg>
+          </button>
+          <button
+            class="carousel-next"
+            data-carousel="categories"
+            aria-label="Next"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="9,18 15,12 9,6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto px-5 md:px-8"></div>
+
+    <!-- BEST SELLERS -->
+    <section
+      id="bestsellers"
+      class="py-20 md:py-28 max-w-6xl mx-auto px-5 md:px-8"
+    >
+      <div class="text-center mb-14 fade-up">
+        <div class="inline-flex items-center gap-2.5 mb-4">
+          <div class="deco-line"></div>
+          <span
+            class="text-xs tracking-[0.2em] uppercase font-light"
+            style="color: #d4a853"
+            >Top Picks</span
+          >
+          <div
+            class="deco-line"
+            style="background: linear-gradient(90deg, transparent, #d4a853)"
+          ></div>
+        </div>
+        <h2
+          class="font-bold text-4xl md:text-5xl"
+          style="color: #e8e0d0; letter-spacing: -0.02em"
+        >
+          Best <span class="gold-text">Sellers</span>
+        </h2>
+        <p class="text-white/40 text-sm font-light mt-3">
+          The crowd favourites — order once, crave forever
+        </p>
+      </div>
+
+      <div class="relative">
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-bestsellers">
+            <!-- item 1 -->
+            <div class="carousel-item item-card rounded-2xl overflow-hidden">
+              <div class="img-wrap">
+                <img
+                  src="images/zinger-burger.jpg"
+                  alt="Zinger Burger"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Zinger Burger</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Our signature burger, secret sauce, double filling
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 330</div>
+              </div>
+            </div>
+            <!-- item 2 -->
+            <div class="carousel-item item-card rounded-2xl overflow-hidden">
+              <div class="img-wrap">
+                <img
+                  src="images/crown-crust-pizza.jpg"
+                  alt="Crown Crust Pizza"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Crown Crust Pizza
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Our signature pizza, crispy crust, generous toppings
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 1280</div>
+              </div>
+            </div>
+            <!-- item 3 -->
+            <div class="carousel-item item-card rounded-2xl overflow-hidden">
+              <div class="img-wrap">
+                <img
+                  src="images/crispy-wings.jpg"
+                  alt="Crispy Wings"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Crispy Wings</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  4 crispy broasted pieces, coleslaw, garlic sauce
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 750</div>
+              </div>
+            </div>
+            <!-- item 4 -->
+            <div class="carousel-item item-card rounded-2xl overflow-hidden">
+              <div class="img-wrap">
+                <img
+                  src="images/karak-tea.jpg"
+                  alt="Karak Tea"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Karak Tea</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Traditional Pakistani tea, strong and aromatic
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 150</div>
+              </div>
+            </div>
+            <!-- item 5 -->
+            <div class="carousel-item item-card rounded-2xl overflow-hidden">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-corn-soup.jpg"
+                  alt="Chicken Corn Soup"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Chicken Corn Soup
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Hearty soup with shredded chicken, sweet corn, and a hint of
+                  pepper
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 630</div>
+              </div>
+            </div>
+            <!-- item 6 -->
+            <div class="carousel-item item-card rounded-2xl overflow-hidden">
+              <div class="img-wrap">
+                <img
+                  src="images/beef-steak.jpg"
+                  alt="Beef Steak"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Beef Steak</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Juicy beef cut, black pepper sauce, grilled veggies
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 1530</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-5">
+          <button
+            class="carousel-prev"
+            data-carousel="bestsellers"
+            aria-label="Previous"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="15,18 9,12 15,6" />
+            </svg>
+          </button>
+          <button
+            class="carousel-next"
+            data-carousel="bestsellers"
+            aria-label="Next"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="9,18 15,12 9,6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto px-5 md:px-8"></div>
+
+    <!-- TODAY'S DEALS -->
+    <section id="deals" class="py-20 md:py-28 max-w-6xl mx-auto px-5 md:px-8">
+      <div class="text-center mb-14 fade-up">
+        <div class="inline-flex items-center gap-2.5 mb-4">
+          <div class="deco-line"></div>
+          <span
+            class="text-xs tracking-[0.2em] uppercase font-light"
+            style="color: #d4a853"
+            >Limited Time</span
+          >
+          <div
+            class="deco-line"
+            style="background: linear-gradient(90deg, transparent, #d4a853)"
+          ></div>
+        </div>
+        <h2
+          class="font-bold text-4xl md:text-5xl"
+          style="color: #e8e0d0; letter-spacing: -0.02em"
+        >
+          Today's <span class="gold-text">Deals</span>
+        </h2>
+        <p class="text-white/40 text-sm font-light mt-3">
+          Don't sleep on these — they don't last
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Deal 1 -->
+        <div
+          class="deal-card rounded-2xl overflow-hidden fade-up"
+          style="transition-delay: 0.1s"
+        >
+          <div class="p-7 flex gap-5 items-center">
+            <div class="w-14 h-14 mx-auto rounded-xl overflow-hidden mb-4">
+              <img
+                src="images/pizza-feast-combo.jpg"
+                alt="Pizza Feast Combo"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex-1 min-w-0">
+              <span
+                class="badge-bestseller text-xs px-2.5 py-1 rounded-full font-light inline-block mb-2"
+                >🔥 Hot Deal</span
+              >
+              <h3 class="font-bold text-xl text-white/90 mb-1">
+                Pizza Feast Combo
+              </h3>
+              <p class="text-xs text-white/40 font-light">
+                1 Medium Pizza + 2 Zinger + 2 Drinks
+              </p>
+              <div class="flex items-center gap-3 mt-3">
+                <span class="price-strike text-sm">Rs. 3,000</span>
+                <span class="font-semibold text-lg" style="color: #d4a853"
+                  >Rs. 2,499</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="px-7 pb-6">
+            <a
+              href="https://wa.me/923348901413"
+              target="_blank"
+              class="btn-gold inline-block text-sm px-6 py-2.5 rounded-full"
+            >
+              Order This Deal →
+            </a>
+          </div>
+        </div>
+
+        <!-- Deal 2 -->
+        <div class="deal-card rounded-2xl overflow-hidden fade-up">
+          <div class="p-7 flex gap-5 items-center">
+            <div class="w-14 h-14 mx-auto rounded-xl overflow-hidden mb-4">
+              <img
+                src="images/family-deal.jpg"
+                alt="Family Deal"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex-1 min-w-0">
+              <span
+                class="badge-bestseller text-xs px-2.5 py-1 rounded-full font-light inline-block mb-2"
+                >🔥 Best Seller</span
+              >
+              <h3 class="font-bold text-xl text-white/90 mb-1">Family Deal</h3>
+              <p class="text-xs text-white/40 font-light">
+                2 Medium Pizza + 4 Zinger Burgers + 10 Crispy Wings + 4 Drinks
+              </p>
+              <div class="flex items-center gap-3 mt-3">
+                <span class="price-strike text-sm">Rs. 6,199</span>
+                <span class="font-semibold text-lg" style="color: #d4a853"
+                  >Rs. 5,699</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="px-7 pb-6">
+            <a
+              href="https://wa.me/923348901413"
+              target="_blank"
+              class="btn-gold inline-block text-sm px-6 py-2.5 rounded-full"
+            >
+              Order This Deal →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto px-5 md:px-8"></div>
+
+    <!-- ORDER NOW -->
+    <section id="order" class="py-20 md:py-28">
+      <div class="max-w-4xl mx-auto px-5 md:px-8 text-center">
+        <div class="fade-up mb-4">
+          <div class="inline-flex items-center gap-2.5 mb-6">
+            <div class="deco-line"></div>
+            <span
+              class="text-xs tracking-[0.2em] uppercase font-light"
+              style="color: #d4a853"
+              >Quick Order</span
+            >
+            <div
+              class="deco-line"
+              style="background: linear-gradient(90deg, transparent, #d4a853)"
+            ></div>
+          </div>
+          <h2
+            class="font-bold text-4xl md:text-5xl mb-4"
+            style="color: #e8e0d0; letter-spacing: -0.02em"
+          >
+            Ready to <span class="gold-text">Order?</span>
+          </h2>
+          <p class="text-white/40 text-sm font-light mb-12">
+            Place your order directly — we'll handle the rest
+          </p>
+        </div>
+
+        <div
+          class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-5 fade-up"
+        >
+          <!-- WhatsApp -->
+          <a
+            href="https://wa.me/923348901413"
+            target="_blank"
+            class="btn-whatsapp flex items-center justify-center gap-3 px-10 py-5 rounded-2xl text-base font-semibold flex-1 sm:flex-initial"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+              />
+            </svg>
+            Order on WhatsApp
+          </a>
+
+          <!-- Foodpanda -->
+          <a
+            href="https://www.foodpanda.pk/restaurant/sj2s/aladdin-cafe-and-cream"
+            target="_blank"
+            class="btn-foodpanda flex items-center justify-center gap-3 px-10 py-5 rounded-2xl text-base font-semibold flex-1 sm:flex-initial"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"
+              />
+            </svg>
+            Order on Foodpanda
+          </a>
+        </div>
+
+        <p class="text-white/25 text-xs font-light mt-8 fade-up">
+          WhatsApp orders: 12pm – 11pm daily &nbsp;·&nbsp; Foodpanda: check app
+          for availability
+        </p>
+      </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto px-5 md:px-8"></div>
+
+    <!-- ABOUT (brief) -->
+    <section id="about" class="py-20 md:py-28 max-w-6xl mx-auto px-5 md:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="fade-up">
+          <div class="inline-flex items-center gap-2.5 mb-6">
+            <div class="deco-line"></div>
+            <span
+              class="text-xs tracking-[0.2em] uppercase font-light"
+              style="color: #d4a853"
+              >Our Story</span
+            >
+          </div>
+          <h2
+            class="font-bold text-4xl md:text-5xl mb-6 leading-tight"
+            style="color: #e8e0d0; letter-spacing: -0.02em"
+          >
+            Born in <span class="gold-text">Mardan,</span><br />made for
+            everyone
+          </h2>
+          <p class="text-white/50 font-light leading-relaxed text-sm mb-5">
+            Aladdin Cafe & Cream started with one simple belief: great food
+            doesn't need to cost a fortune. We set up shop in Mardan to give the
+            city a place that feels premium without being pretentious.
+          </p>
+          <p class="text-white/50 font-light leading-relaxed text-sm">
+            Every burger is hand-pressed, every shake hand-blended, and every
+            scoop served with a bit of theatre. We're not a chain — we're yours.
+          </p>
+        </div>
+
+        <div
+          class="grid grid-cols-2 gap-4 fade-up"
+          style="transition-delay: 0.1s"
+        >
+          <div class="item-card rounded-2xl p-6 text-center">
+            <div class="font-bold text-3xl gold-text mb-2">2025</div>
+            <div class="text-xs text-white/40 font-light">Founded</div>
+          </div>
+          <div class="item-card rounded-2xl p-6 text-center">
+            <div class="font-bold text-3xl gold-text mb-2">4.0★</div>
+            <div class="text-xs text-white/40 font-light">Google Rating</div>
+          </div>
+          <div class="item-card rounded-2xl p-6 text-center">
+            <div class="font-bold text-3xl gold-text mb-2">1k+</div>
+            <div class="text-xs text-white/40 font-light">Happy Customers</div>
+          </div>
+          <div class="item-card rounded-2xl p-6 text-center">
+            <div class="font-bold text-3xl gold-text mb-2">40+</div>
+            <div class="text-xs text-white/40 font-light">Menu Items</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto px-5 md:px-8"></div>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="py-20 md:py-28 max-w-6xl mx-auto px-5 md:px-8">
+      <div class="text-center mb-14 fade-up">
+        <div class="inline-flex items-center gap-2.5 mb-4">
+          <div class="deco-line"></div>
+          <span
+            class="text-xs tracking-[0.2em] uppercase font-light"
+            style="color: #d4a853"
+            >Reviews</span
+          >
+          <div
+            class="deco-line"
+            style="background: linear-gradient(90deg, transparent, #d4a853)"
+          ></div>
+        </div>
+        <h2
+          class="font-bold text-4xl md:text-5xl"
+          style="color: #e8e0d0; letter-spacing: -0.02em"
+        >
+          What people <span class="gold-text">are saying</span>
+        </h2>
+        <p class="text-white/40 text-sm font-light mt-3">
+          Real reviews from real customers
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="item-card rounded-2xl p-6 fade-up">
+          <!-- Stars -->
+          <div class="flex items-center gap-1 mb-4">
+            <span style="color: #d4a853">★★★★★</span>
+          </div>
+          <!-- Review -->
+          <p class="text-sm text-white/60 font-light leading-relaxed mb-5">
+            "Honestly the best burger I've had in Mardan. The smash burger is
+            unreal. Came back three times this week already."
+          </p>
+          <!-- Reviewer -->
+          <div
+            class="flex items-center gap-3 pt-4"
+            style="border-top: 0.5px solid rgba(255, 255, 255, 0.06)"
+          >
+            <div
+              class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0"
+              style="background: rgba(212, 168, 83, 0.15); color: #d4a853"
+            >
+              A
+            </div>
+            <div>
+              <div class="text-sm font-medium text-white/80">Ahmed Khan</div>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <div
+                  class="w-2 h-2 rounded-full"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #4285f4,
+                      #34a853,
+                      #fbbc04,
+                      #ea4335
+                    );
+                    background: #4285f4;
+                  "
+                ></div>
+                <span class="text-xs text-white/30 font-light"
+                  >Google Review</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="item-card rounded-2xl p-6 fade-up"
+          style="transition-delay: 0.08s"
+        >
+          <div class="flex items-center gap-1 mb-4">
+            <span style="color: #d4a853">★★★★★</span>
+          </div>
+          <p class="text-sm text-white/60 font-light leading-relaxed mb-5">
+            "Brought the whole family — kids loved the ice cream, we loved the
+            broast. Great prices too. This place has become our weekend spot."
+          </p>
+          <div
+            class="flex items-center gap-3 pt-4"
+            style="border-top: 0.5px solid rgba(255, 255, 255, 0.06)"
+          >
+            <div
+              class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0"
+              style="background: rgba(212, 168, 83, 0.15); color: #d4a853"
+            >
+              S
+            </div>
+            <div>
+              <div class="text-sm font-medium text-white/80">Sana Gul</div>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <div
+                  class="w-2 h-2 rounded-full"
+                  style="background: #34a853"
+                ></div>
+                <span class="text-xs text-white/30 font-light"
+                  >Google Review</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="item-card rounded-2xl p-6 fade-up"
+          style="transition-delay: 0.16s"
+        >
+          <div class="flex items-center gap-1 mb-4">
+            <span style="color: #d4a853">★★★★★</span>
+          </div>
+          <p class="text-sm text-white/60 font-light leading-relaxed mb-5">
+            "The Oreo shake is something else. Thick, cold, not too sweet. And
+            the staff is really friendly. Mardan needed a place like this."
+          </p>
+          <div
+            class="flex items-center gap-3 pt-4"
+            style="border-top: 0.5px solid rgba(255, 255, 255, 0.06)"
+          >
+            <div
+              class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0"
+              style="background: rgba(212, 168, 83, 0.15); color: #d4a853"
+            >
+              U
+            </div>
+            <div>
+              <div class="text-sm font-medium text-white/80">Usman Tariq</div>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <div
+                  class="w-2 h-2 rounded-full"
+                  style="background: #fbbc04"
+                ></div>
+                <span class="text-xs text-white/30 font-light"
+                  >Google Review</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider max-w-6xl mx-auto px-5 md:px-8"></div>
+
+    <section id="find-us" class="py-20 md:py-28 max-w-6xl mx-auto px-5 md:px-8">
+      <div class="text-center mb-14 fade-up">
+        <div class="inline-flex items-center gap-2.5 mb-4">
+          <div class="deco-line"></div>
+          <span
+            class="text-xs tracking-[0.2em] uppercase font-light"
+            style="color: #d4a853"
+            >Come Visit</span
+          >
+          <div
+            class="deco-line"
+            style="background: linear-gradient(90deg, transparent, #d4a853)"
+          ></div>
+        </div>
+        <h2
+          class="font-bold text-4xl md:text-5xl"
+          style="color: #e8e0d0; letter-spacing: -0.02em"
+        >
+          Find <span class="gold-text">Us</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch fade-up">
+        <!-- LEFT: Info -->
+        <div class="item-card rounded-2xl p-8 flex flex-col gap-8">
+          <!-- Location -->
+          <div class="flex gap-4">
+            <div
+              class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+              style="background: rgba(212, 168, 83, 0.1)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#d4a853"
+                stroke-width="1.5"
+              >
+                <path
+                  d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                />
+                <circle cx="12" cy="9" r="2.5" />
+              </svg>
+            </div>
+            <div>
+              <div
+                class="text-xs text-white/30 font-light tracking-widest uppercase mb-1.5"
+              >
+                Location
+              </div>
+              <p class="text-sm text-white/75 font-light leading-relaxed">
+                Sahibzada Plaza, Nowshera Road, near Railway Station,<br />Mardan,
+                KPK, Pakistan
+              </p>
+              <a
+                href="https://maps.app.goo.gl/AX6SBcffc9uHDZky6"
+                target="_blank"
+                class="inline-block mt-2 text-xs"
+                style="color: #d4a853"
+                >Get Directions →</a
+              >
+            </div>
+          </div>
+
+          <div style="height: 1px; background: rgba(255, 255, 255, 0.05)"></div>
+
+          <!-- Hours -->
+          <div class="flex gap-4">
+            <div
+              class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+              style="background: rgba(212, 168, 83, 0.1)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#d4a853"
+                stroke-width="1.5"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <polyline points="12,6 12,12 16,14" />
+              </svg>
+            </div>
+            <div class="w-full">
+              <div
+                class="text-xs text-white/30 font-light tracking-widest uppercase mb-1.5"
+              >
+                Hours
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-white/40 font-light">Mon – Thu</span>
+                  <span class="text-white/70">12pm – 11pm</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-white/40 font-light">Fri – Sun</span>
+                  <span class="text-white/70">12pm – 12am</span>
+                </div>
+              </div>
+              <div class="inline-flex items-center gap-2 mt-3">
+                <div
+                  class="w-2 h-2 rounded-full bg-green-400 animate-pulse"
+                ></div>
+                <span class="text-xs text-green-400 font-light">Open Now</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="height: 1px; background: rgba(255, 255, 255, 0.05)"></div>
+
+          <!-- Contact -->
+          <div class="flex gap-4">
+            <div
+              class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+              style="background: rgba(212, 168, 83, 0.1)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#d4a853"
+                stroke-width="1.5"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <div
+                class="text-xs text-white/30 font-light tracking-widest uppercase mb-1.5"
+              >
+                Contact
+              </div>
+              <div class="space-y-1.5">
+                <div>
+                  <a
+                    href="https://wa.me/923348901413"
+                    class="text-sm text-white/70 hover:text-gold font-light transition-colors"
+                    >03348901413</a
+                  >
+                </div>
+                <div>
+                  <a
+                    href="#"
+                    class="text-xs text-white/40 hover:text-gold font-light transition-colors"
+                    >@aladdincafeandcream on Tiktok</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Map -->
+        <div
+          class="rounded-2xl overflow-hidden fade-up"
+          style="
+            transition-delay: 0.1s;
+            min-height: 400px;
+            border: 0.5px solid rgba(255, 255, 255, 0.07);
+          "
+        >
+          <!-- Replace the src with your actual Google Maps embed URL -->
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6601.092523049653!2d72.02390491962433!3d34.18351673513401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38decb00160ce029%3A0x87939209a531f769!2sAladdin%20Caf%C3%A9%20%26%20Cream!5e0!3m2!1sen!2sus!4v1777839846350!5m2!1sen!2sus"
+            width="100%"
+            height="100%"
+            style="
+              border: 0;
+              filter: grayscale(1) invert(0.9) contrast(0.85) brightness(0.75);
+              min-height: 400px;
+            "
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="border-top: 0.5px solid rgba(212, 168, 83, 0.12)">
+      <div class="max-w-6xl mx-auto px-5 md:px-8 pt-16 pb-8">
+        <!-- Top grid -->
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-14"
+        >
+          <!-- Col 1: Logo + tagline + socials -->
+          <div class="lg:col-span-1">
+            <a href="index.html" class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                style="background: linear-gradient(135deg, #d4a853, #a07c38)"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"
+                    fill="#0c0b09"
+                  />
+                  <circle cx="12" cy="9" r="2.5" fill="#0c0b09" />
+                </svg>
+              </div>
+              <div>
+                <div
+                  class="font-serif font-semibold text-base leading-tight"
+                  style="color: #d4a853"
+                >
+                  Aladdin
+                </div>
+                <div
+                  style="
+                    color: rgba(212, 168, 83, 0.5);
+                    font-size: 9px;
+                    letter-spacing: 0.15em;
+                  "
+                  class="font-light"
+                >
+                  CAFE & CREAM
+                </div>
+              </div>
+            </a>
+            <p class="text-sm text-white/35 font-light leading-relaxed mb-6">
+              Good food. Good mood.<br />Mardan's favourite spot for families,
+              friends & everyone in between.
+            </p>
+            <!-- Socials -->
+            <div class="flex items-center gap-3">
+              <!-- Instagram -->
+              <a
+                href="#"
+                target="_blank"
+                aria-label="Instagram"
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                style="
+                  background: rgba(212, 168, 83, 0.08);
+                  border: 0.5px solid rgba(212, 168, 83, 0.15);
+                "
+                onmouseover="
+                  this.style.background = 'rgba(212,168,83,0.15)';
+                  this.style.borderColor = 'rgba(212,168,83,0.4)';
+                "
+                onmouseout="
+                  this.style.background = 'rgba(212,168,83,0.08)';
+                  this.style.borderColor = 'rgba(212,168,83,0.15)';
+                "
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#d4a853"
+                  stroke-width="1.5"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.5" fill="#d4a853" />
+                </svg>
+              </a>
+              <!-- WhatsApp -->
+              <a
+                href="https://wa.me/923348901413"
+                target="_blank"
+                aria-label="WhatsApp"
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                style="
+                  background: rgba(212, 168, 83, 0.08);
+                  border: 0.5px solid rgba(212, 168, 83, 0.15);
+                "
+                onmouseover="
+                  this.style.background = 'rgba(212,168,83,0.15)';
+                  this.style.borderColor = 'rgba(212,168,83,0.4)';
+                "
+                onmouseout="
+                  this.style.background = 'rgba(212,168,83,0.08)';
+                  this.style.borderColor = 'rgba(212,168,83,0.15)';
+                "
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#d4a853">
+                  <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
+                </svg>
+              </a>
+              <!-- Facebook -->
+              <a
+                href="#"
+                target="_blank"
+                aria-label="Facebook"
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                style="
+                  background: rgba(212, 168, 83, 0.08);
+                  border: 0.5px solid rgba(212, 168, 83, 0.15);
+                "
+                onmouseover="
+                  this.style.background = 'rgba(212,168,83,0.15)';
+                  this.style.borderColor = 'rgba(212,168,83,0.4)';
+                "
+                onmouseout="
+                  this.style.background = 'rgba(212,168,83,0.08)';
+                  this.style.borderColor = 'rgba(212,168,83,0.15)';
+                "
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#d4a853">
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Col 2: Quick Links -->
+          <div>
+            <h4
+              class="text-xs font-semibold tracking-widest uppercase mb-5"
+              style="color: #d4a853; letter-spacing: 0.18em"
+            >
+              Quick Links
+            </h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="index.html"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Full Menu</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index.html#deals"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Today's Deals</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index.html#about"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Our Story</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index.html#reviews"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Reviews</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index.html#find-us"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Find Us</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Menu -->
+          <div>
+            <h4
+              class="text-xs font-semibold tracking-widest uppercase mb-5"
+              style="color: #d4a853; letter-spacing: 0.18em"
+            >
+              Menu
+            </h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="menu.html#steaks"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🥩 Steaks</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#burgers"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🍔 Burgers</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#pizza"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🍕 Pizza</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#chinese"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🍜 Chinese</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#broast"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🍗 Broast</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#drinks"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🥤 Shakes & Drinks</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Col 4: Contact -->
+          <div>
+            <h4
+              class="text-xs font-semibold tracking-widest uppercase mb-5"
+              style="color: #d4a853; letter-spacing: 0.18em"
+            >
+              Contact
+            </h4>
+            <ul class="space-y-4">
+              <li class="flex gap-3">
+                <svg
+                  class="flex-shrink-0 mt-0.5"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(212,168,83,0.5)"
+                  stroke-width="1.5"
+                >
+                  <path
+                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                  />
+                  <circle cx="12" cy="9" r="2.5" />
+                </svg>
+                <span class="text-sm text-white/35 font-light leading-relaxed"
+                  >Sahibzada Plaza, Nowshera Road, near Railway Station,
+                  Mardan</span
+                >
+              </li>
+              <li class="flex gap-3">
+                <svg
+                  class="flex-shrink-0 mt-0.5"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(212,168,83,0.5)"
+                  stroke-width="1.5"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"
+                  />
+                </svg>
+                <a
+                  href="https://wa.me/923348901413"
+                  class="text-sm text-white/35 font-light hover:text-gold transition-colors"
+                  >03348901413</a
+                >
+              </li>
+              <li class="flex gap-3">
+                <svg
+                  class="flex-shrink-0 mt-0.5"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(212,168,83,0.5)"
+                  stroke-width="1.5"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <polyline points="12,6 12,12 16,14" />
+                </svg>
+                <div class="text-sm text-white/35 font-light">
+                  Mon–Thu: 12pm – 11pm<br />
+                  Fri–Sun: 12pm – 12am
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div
+          style="
+            height: 0.5px;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(212, 168, 83, 0.15),
+              transparent
+            );
+          "
+          class="mb-8"
+        ></div>
+
+        <!-- Bottom bar -->
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between gap-4"
+        >
+          <p class="text-xs text-white/20 font-light">
+            © 2026 Aladdin Cafe & Cream. All rights reserved.
+          </p>
+          <p class="text-xs text-white/15 font-light">
+            Made with ♥ in Mardan, KPK
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script>
+      // Hamburger toggle
+      const hamBtn = document.getElementById("ham-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      hamBtn.addEventListener("click", () => {
+        hamBtn.classList.toggle("open");
+        mobileMenu.classList.toggle("open");
+      });
+
+      // Close mobile menu on link click
+      document.querySelectorAll(".mobile-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamBtn.classList.remove("open");
+          mobileMenu.classList.remove("open");
+        });
+      });
+
+      // Scroll fade-in observer
+      const fadeEls = document.querySelectorAll(".fade-up");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+      );
+
+      fadeEls.forEach((el) => observer.observe(el));
+
+      // Navbar active link highlight on scroll
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          let current = "";
+          sections.forEach((s) => {
+            if (window.scrollY >= s.offsetTop - 100) current = s.id;
+          });
+          navLinks.forEach((link) => {
+            link.style.color =
+              link.getAttribute("href") === "#" + current ? "#d4a853" : "";
+          });
+        },
+        { passive: true },
+      );
+
+      // Carousel
+      const carousels = {};
+      document.querySelectorAll(".carousel-track").forEach((track) => {
+        const id = track.id.replace("carousel-", "");
+        carousels[id] = { track, index: 0 };
+      });
+
+      function getVisible() {
+        return window.innerWidth < 768 ? 1 : 4;
+      }
+
+      function updateCarousel(id) {
+        const { track, index } = carousels[id];
+        const items = track.querySelectorAll(".carousel-item");
+        if (!items.length) return;
+        const itemW = items[0].offsetWidth + 16;
+        track.style.transform = `translateX(-${index * itemW}px)`;
+        const visible = getVisible();
+        const max = Math.max(0, items.length - visible);
+        const prevBtn = document.querySelector(
+          `[data-carousel="${id}"].carousel-prev`,
+        );
+        const nextBtn = document.querySelector(
+          `[data-carousel="${id}"].carousel-next`,
+        );
+        if (prevBtn) prevBtn.disabled = index === 0;
+        if (nextBtn) nextBtn.disabled = index >= max;
+      }
+
+      document.querySelectorAll(".carousel-next").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.carousel;
+          const items = carousels[id].track.querySelectorAll(".carousel-item");
+          const max = Math.max(0, items.length - getVisible());
+          carousels[id].index = Math.min(carousels[id].index + 1, max);
+          updateCarousel(id);
+        });
+      });
+
+      document.querySelectorAll(".carousel-prev").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.carousel;
+          carousels[id].index = Math.max(0, carousels[id].index - 1);
+          updateCarousel(id);
+        });
+      });
+
+      document.querySelectorAll(".carousel-track-wrap").forEach((wrap) => {
+        let startX = 0;
+        wrap.addEventListener(
+          "touchstart",
+          (e) => {
+            startX = e.touches[0].clientX;
+          },
+          { passive: true },
+        );
+        wrap.addEventListener(
+          "touchend",
+          (e) => {
+            const diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) < 50) return;
+            const id = wrap
+              .querySelector(".carousel-track")
+              .id.replace("carousel-", "");
+            const items =
+              carousels[id].track.querySelectorAll(".carousel-item");
+            const max = Math.max(0, items.length - getVisible());
+            if (diff > 0)
+              carousels[id].index = Math.min(carousels[id].index + 1, max);
+            else carousels[id].index = Math.max(0, carousels[id].index - 1);
+            updateCarousel(id);
+          },
+          { passive: true },
+        );
+      });
+
+      Object.keys(carousels).forEach(updateCarousel);
+      window.addEventListener("resize", () =>
+        Object.keys(carousels).forEach(updateCarousel),
+      );
+    </script>
+  </body>
+</html>

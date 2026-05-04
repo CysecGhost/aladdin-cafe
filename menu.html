@@ -1,0 +1,2021 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu — Aladdin Cafe & Cream</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gold: "#d4a853",
+              bg: "#0c0b09",
+              card: "#141210",
+            },
+            fontFamily: {
+              sans: ["Outfit", "sans-serif"],
+              serif: ["Cormorant Garamond", "serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: #0c0b09;
+        color: #e8e0d0;
+        font-family: "Outfit", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Grain */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 999;
+        opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+      }
+
+      .gold-text {
+        background: linear-gradient(
+          135deg,
+          #d4a853 0%,
+          #f0c97a 50%,
+          #d4a853 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Navbar */
+      .navbar-blur {
+        background: rgba(12, 11, 9, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 0.5px solid rgba(212, 168, 83, 0.15);
+      }
+
+      /* Sticky category nav */
+      .cat-nav {
+        background: rgba(12, 11, 9, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Category pill */
+      .cat-pill {
+        padding: 7px 18px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(232, 224, 208, 0.45);
+        border: 0.5px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+      }
+      .cat-pill:hover {
+        color: rgba(232, 224, 208, 0.8);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+      .cat-pill.active {
+        background: rgba(212, 168, 83, 0.1);
+        border-color: rgba(212, 168, 83, 0.3);
+        color: #d4a853;
+      }
+
+      /* Section heading */
+      .section-label {
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #d4a853;
+        font-weight: 500;
+      }
+
+      /* Item card */
+      .item-card {
+        background: #141210;
+        border: 0.5px solid rgba(255, 255, 255, 0.07);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.22s ease;
+      }
+      .item-card:hover {
+        border-color: rgba(212, 168, 83, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+      }
+
+      /* Image placeholder */
+      .img-wrap {
+        width: 100%;
+        aspect-ratio: 4/3;
+        background: linear-gradient(145deg, #1a1713, #211e18);
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Badge */
+      .badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 10px;
+        font-weight: 500;
+        padding: 3px 10px;
+        border-radius: 999px;
+      }
+      .badge-gold {
+        background: rgba(212, 168, 83, 0.12);
+        color: #d4a853;
+        border: 0.5px solid rgba(212, 168, 83, 0.3);
+      }
+      .badge-green {
+        background: rgba(74, 222, 128, 0.1);
+        color: #4ade80;
+        border: 0.5px solid rgba(74, 222, 128, 0.25);
+      }
+      .badge-red {
+        background: rgba(248, 113, 113, 0.1);
+        color: #f87171;
+        border: 0.5px solid rgba(248, 113, 113, 0.25);
+      }
+
+      /* Section divider */
+      .section-divider {
+        height: 0.5px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(212, 168, 83, 0.15),
+          transparent
+        );
+      }
+
+      /* Btn gold */
+      .btn-gold {
+        background: linear-gradient(135deg, #d4a853, #c4943d);
+        color: #0c0b09;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 16px rgba(212, 168, 83, 0.2);
+      }
+      .btn-gold:hover {
+        box-shadow: 0 6px 24px rgba(212, 168, 83, 0.35);
+        transform: translateY(-1px);
+      }
+
+      /* Ghost btn */
+      .btn-ghost {
+        border: 0.5px solid rgba(212, 168, 83, 0.35);
+        color: #d4a853;
+        transition: all 0.2s ease;
+      }
+      .btn-ghost:hover {
+        background: rgba(212, 168, 83, 0.06);
+        border-color: rgba(212, 168, 83, 0.6);
+      }
+
+      /* Scroll pill nav scrollbar hide */
+      .cat-scroll {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-mask-image: linear-gradient(90deg, black 85%, transparent 100%);
+        mask-image: linear-gradient(90deg, black 85%, transparent 100%);
+      }
+      .cat-scroll::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Fade up */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
+      }
+      .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Ham */
+      .ham-line {
+        display: block;
+        width: 22px;
+        height: 1.5px;
+        background: #d4a853;
+        transition: all 0.3s ease;
+        transform-origin: center;
+      }
+      #ham-btn.open .ham-line:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      #ham-btn.open .ham-line:nth-child(2) {
+        opacity: 0;
+      }
+      #ham-btn.open .ham-line:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      #mobile-menu {
+        transition:
+          max-height 0.3s ease,
+          opacity 0.3s ease;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
+      #mobile-menu.open {
+        max-height: 300px;
+        opacity: 1;
+      }
+
+      /* Price strike */
+      .price-strike {
+        text-decoration: line-through;
+        color: rgba(232, 224, 208, 0.3);
+        font-size: 12px;
+      }
+
+      /* Eyebrow pill */
+      .eyebrow-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(212, 168, 83, 0.07);
+        border: 0.5px solid rgba(212, 168, 83, 0.2);
+        border-radius: 999px;
+        padding: 5px 14px 5px 8px;
+      }
+      .eyebrow-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #d4a853;
+      }
+
+      .carousel-track-wrap {
+        overflow: hidden;
+        position: relative;
+      }
+      .carousel-track {
+        display: flex;
+        gap: 16px;
+        transition: transform 0.35s ease;
+        will-change: transform;
+      }
+      .carousel-item {
+        flex: 0 0 calc(25% - 12px);
+        min-width: 220px;
+      }
+      @media (max-width: 768px) {
+        .carousel-item {
+          flex: 0 0 calc(75vw - 40px);
+        }
+      }
+      @media (max-width: 480px) {
+        .carousel-item {
+          flex: 0 0 calc(85vw - 40px);
+        }
+      }
+      .carousel-prev,
+      .carousel-next {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 0.5px solid rgba(212, 168, 83, 0.3);
+        color: #d4a853;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+      .carousel-prev:hover,
+      .carousel-next:hover {
+        background: rgba(212, 168, 83, 0.1);
+        border-color: rgba(212, 168, 83, 0.6);
+      }
+      .carousel-prev:disabled,
+      .carousel-next:disabled {
+        opacity: 0.2;
+        cursor: not-allowed;
+      }
+
+      section[id] {
+        scroll-margin-top: 132px; /* 64px navbar + 52px cat-nav + 16px breathing room */
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar-blur fixed top-0 left-0 right-0 z-50">
+      <div class="max-w-6xl mx-auto px-5 md:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="index.html" class="flex items-center gap-3">
+            <div
+              class="w-9 h-9 rounded-full flex items-center justify-center"
+              style="background: linear-gradient(135deg, #d4a853, #a07c38)"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"
+                  fill="#0c0b09"
+                />
+                <circle cx="12" cy="9" r="2.5" fill="#0c0b09" />
+              </svg>
+            </div>
+            <div>
+              <div
+                class="font-serif font-semibold text-base leading-tight"
+                style="color: #d4a853"
+              >
+                Aladdin
+              </div>
+              <div
+                style="
+                  color: rgba(212, 168, 83, 0.5);
+                  font-size: 9px;
+                  letter-spacing: 0.15em;
+                "
+                class="font-light tracking-widest"
+              >
+                CAFE & CREAM
+              </div>
+            </div>
+          </a>
+
+          <div class="hidden md:flex items-center gap-8">
+            <a
+              href="index.html"
+              class="text-sm font-light text-white/50 hover:text-gold transition-colors"
+              >Home</a
+            >
+            <a
+              href="index.html#deals"
+              class="text-sm font-light text-white/50 hover:text-gold transition-colors"
+              >Deals</a
+            >
+            <a
+              href="index.html#find-us"
+              class="text-sm font-light text-white/50 hover:text-gold transition-colors"
+              >Find Us</a
+            >
+          </div>
+
+          <div class="flex items-center gap-4">
+            <a
+              href="https://wa.me/03348901413"
+              target="_blank"
+              class="hidden md:block btn-gold text-sm px-5 py-2 rounded-full"
+              >Order Now</a
+            >
+            <button id="ham-btn" class="md:hidden flex flex-col gap-[5px] p-2">
+              <span class="ham-line"></span><span class="ham-line"></span
+              ><span class="ham-line"></span>
+            </button>
+          </div>
+        </div>
+
+        <div id="mobile-menu">
+          <div
+            class="py-4 space-y-1 border-t"
+            style="border-color: rgba(212, 168, 83, 0.1)"
+          >
+            <a
+              href="index.html"
+              class="mobile-link block px-3 py-2.5 text-sm text-white/60 hover:text-gold transition-colors"
+              >Home</a
+            >
+            <a
+              href="index.html#deals"
+              class="mobile-link block px-3 py-2.5 text-sm text-white/60 hover:text-gold transition-colors"
+              >Deals</a
+            >
+            <a
+              href="index.html#find-us"
+              class="mobile-link block px-3 py-2.5 text-sm text-white/60 hover:text-gold transition-colors"
+              >Find Us</a
+            >
+            <div class="px-3 pt-2">
+              <a
+                href="https://wa.me/03348901413"
+                target="_blank"
+                class="mobile-link btn-gold block text-center text-sm px-5 py-2.5 rounded-full"
+                >Order on WhatsApp</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ── STICKY CATEGORY NAV ── -->
+    <div
+      id="cat-nav"
+      class="cat-nav fixed left-0 right-0 z-40"
+      style="top: 64px"
+    >
+      <div class="max-w-6xl mx-auto px-5 md:px-8">
+        <div class="cat-scroll flex items-center gap-1.5 py-3 overflow-x-auto">
+          <button class="cat-pill active" data-target="steaks">
+            🥩 Steaks
+          </button>
+          <button class="cat-pill" data-target="burgers">🍔 Burgers</button>
+          <button class="cat-pill" data-target="pizza">🍕 Pizza</button>
+          <button class="cat-pill" data-target="chinese">🍜 Chinese</button>
+          <button class="cat-pill" data-target="broast">🍗 Broast</button>
+          <button class="cat-pill" data-target="drinks">
+            🥤 Shakes & Drinks
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="pt-36 pb-12 px-5 md:px-8 max-w-6xl mx-auto">
+      <div class="eyebrow-pill mb-5">
+        <div class="eyebrow-dot"></div>
+        <span class="text-xs font-medium tracking-wide" style="color: #d4a853"
+          >Full Menu</span
+        >
+      </div>
+      <h1
+        class="font-bold leading-tight mb-3"
+        style="
+          font-size: clamp(2.2rem, 5vw, 3.5rem);
+          color: #f0ead8;
+          letter-spacing: -0.02em;
+        "
+      >
+        Everything we <span class="gold-text">make.</span>
+      </h1>
+      <p class="text-white/40 font-light text-sm max-w-md">
+        Fresh daily. No shortcuts. If it's on this list, it's worth ordering.
+      </p>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-6xl mx-auto px-5 md:px-8 pb-24 space-y-20">
+      <!-- STEAKS -->
+      <section id="steaks">
+        <div class="flex items-center gap-4 mb-8">
+          <div>
+            <div class="section-label mb-1">01</div>
+            <h2
+              class="font-bold text-3xl md:text-4xl"
+              style="color: #e8e0d0; letter-spacing: -0.02em"
+            >
+              Steaks
+            </h2>
+          </div>
+          <div
+            class="flex-1 h-px"
+            style="
+              background: linear-gradient(
+                90deg,
+                rgba(212, 168, 83, 0.2),
+                transparent
+              );
+            "
+          ></div>
+          <div class="flex gap-2">
+            <button
+              class="carousel-prev"
+              data-carousel="steaks"
+              aria-label="Previous"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15,18 9,12 15,6" />
+              </svg>
+            </button>
+            <button
+              class="carousel-next"
+              data-carousel="steaks"
+              aria-label="Next"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9,18 15,12 9,6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-steaks">
+            <!-- Item 1  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-black-pepper-steak.jpg"
+                  alt="Chicken Black Pepper Steak"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Chicken Black Pepper Steak
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Grilled chicken, black pepper sauce, served with fries
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 430</div>
+              </div>
+            </div>
+
+            <!-- Item 2  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-tarragon-steak.jpg"
+                  alt="Chicken Tarragon Steak"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Chicken Tarragon Steak
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Grilled chicken, creamy sauce, served with fries
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 430</div>
+              </div>
+            </div>
+
+            <!-- Item 3  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-mexican-steak.jpg"
+                  alt="Chicken Mexican Steak"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Chicken Mexican Steak
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Grilled chicken, spicy mexican sauce, served with fries
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 430</div>
+              </div>
+            </div>
+
+            <!-- Item 4  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-mushroom-steak.jpg"
+                  alt="Chicken Mushroom Steak"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Chicken Mushroom Steak
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Grilled chicken, mushroom sauce, served with fries
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 430</div>
+              </div>
+            </div>
+
+            <!-- Item 5  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/beef-steak.jpg"
+                  alt="Beef Steak"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Beef Steak</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Grilled beef, creamy sauce, served with fries
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 430</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BURGERS -->
+      <section id="burgers">
+        <div class="flex items-center gap-4 mb-8">
+          <div>
+            <div class="section-label mb-1">02</div>
+            <h2
+              class="font-bold text-3xl md:text-4xl"
+              style="color: #e8e0d0; letter-spacing: -0.02em"
+            >
+              Burgers
+            </h2>
+          </div>
+          <div
+            class="flex-1 h-px"
+            style="
+              background: linear-gradient(
+                90deg,
+                rgba(212, 168, 83, 0.2),
+                transparent
+              );
+            "
+          ></div>
+          <div class="flex gap-2">
+            <button
+              class="carousel-prev"
+              data-carousel="burgers"
+              aria-label="Previous"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15,18 9,12 15,6" />
+              </svg>
+            </button>
+            <button
+              class="carousel-next"
+              data-carousel="burgers"
+              aria-label="Next"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9,18 15,12 9,6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-burgers">
+            <!-- Item 1  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/crispy-california-burger.jpg"
+                  alt="Crispy California Burger"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Crispy California Burger</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Crispy chicken, avocado, lettuce, tomato, special sauce
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 1,050</div>
+              </div>
+            </div>
+
+            <!-- Item 2  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/zinger-cheese-burger.jpg"
+                  alt="Zinger Cheese Burger"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Zinger Cheese Burger</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Crispy chicken fillet, cheese, lettuce, toasted bun
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 599</div>
+              </div>
+            </div>
+
+            <!-- Item 3  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/lava-burger.jpg"
+                  alt="Lava Burger"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Lava Burger</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Juicy beef patty, molten cheese, spicy sauce, fresh lettuce
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 1,190</div>
+              </div>
+            </div>
+
+            <!-- Item 4  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/jalapeno-burger.jpg"
+                  alt="Jalapeno Burger"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Jalapeno Burger</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Spicy jalapenos, beef patty, cheese, lettuce, toasted bun
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 1,199</div>
+              </div>
+            </div>
+
+            <!-- Item 5  -->
+             <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/zinger-burger.jpg"
+                  alt="Zinger Burger"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Zinger Burger</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Crispy chicken fillet, mayo, lettuce, toasted bun
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 499</div>
+              </div>
+            </div>
+
+            <!-- Item 6  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/most-wanted-burger.jpg"
+                  alt="Most Wanted Burger"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Most Wanted Burger</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Signature burger with premium ingredients and bold flavors
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 1,099</div>
+              </div>
+            </div>
+        </section>
+            
+
+      <!-- PIZZA -->
+      <section id="pizza">
+        <div class="flex items-center gap-4 mb-8">
+          <div>
+            <div class="section-label mb-1">03</div>
+            <h2
+              class="font-bold text-3xl md:text-4xl"
+              style="color: #e8e0d0; letter-spacing: -0.02em"
+            >
+              Pizza
+            </h2>
+          </div>
+          <div
+            class="flex-1 h-px"
+            style="
+              background: linear-gradient(
+                90deg,
+                rgba(212, 168, 83, 0.2),
+                transparent
+              );
+            "
+          ></div>
+          <div class="flex gap-2">
+            <button
+              class="carousel-prev"
+              data-carousel="pizza"
+              aria-label="Previous"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15,18 9,12 15,6" />
+              </svg>
+            </button>
+            <button
+              class="carousel-next"
+              data-carousel="pizza"
+              aria-label="Next"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9,18 15,12 9,6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-pizza">
+            <!-- Item 1  -->
+             <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/supreme-pizza.jpg"
+                  alt="Supreme Pizza"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Supreme Pizza</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Family size, loaded toppings, perfect for sharing
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 830</div>
+              </div>
+            </div>
+            
+
+            <!-- Item 2  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/aladdin-special-pizza.jpg"
+                  alt="Aladdin Special Pizza"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Aladdin Special Pizza</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Feeds 2, generous toppings, crispy base, perfect for sharing
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 999</div>
+              </div>
+            </div>
+
+            <!-- Item 3  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/malai-tikka-pizza.jpg"
+                  alt="Malai Tikka Pizza"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Malai Tikka Pizza</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Creamy malai tikka chicken, cheese, spices
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 900</div>
+              </div>
+            </div>
+
+            <!-- Item 4  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/calzone-pizza.jpg"
+                  alt="Calzone Pizza"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Calzone Pizza</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Folded pizza with cheese and toppings, baked to perfection
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 750</div>
+              </div>
+            </div>
+
+            <!-- Item 5  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/bbq-pizza.jpg"
+                  alt="BBQ Pizza"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">BBQ Pizza</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Smoky BBQ sauce, chicken, onions, bell peppers
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 850</div>
+              </div>
+            </div>
+
+            <!-- Item 6  -->
+             <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/crown-crust-pizza.jpg"
+                  alt="Crown Crust Pizza"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Crown Crust Pizza</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Personal size, your choice of toppings, fresh dough
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 800</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHINESE -->
+      <section id="chinese">
+        <div class="flex items-center gap-4 mb-8">
+          <div>
+            <div class="section-label mb-1">04</div>
+            <h2
+              class="font-bold text-3xl md:text-4xl"
+              style="color: #e8e0d0; letter-spacing: -0.02em"
+            >
+              Chinese
+            </h2>
+          </div>
+          <div
+            class="flex-1 h-px"
+            style="
+              background: linear-gradient(
+                90deg,
+                rgba(212, 168, 83, 0.2),
+                transparent
+              );
+            "
+          ></div>
+          <div class="flex gap-2">
+            <button
+              class="carousel-prev"
+              data-carousel="chinese"
+              aria-label="Previous"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15,18 9,12 15,6" />
+              </svg>
+            </button>
+            <button
+              class="carousel-next"
+              data-carousel="chinese"
+              aria-label="Next"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9,18 15,12 9,6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-chinese">
+            <!-- Item 1  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-manchurian.jpg"
+                  alt="Chicken Manchurian"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Chicken Manchurian</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Crispy chicken in tangy manchurian sauce, garnished with spring onions
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 999</div>
+              </div>
+            </div>
+            <!-- Item 2  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-mongolian.jpg"
+                  alt="Chicken Mongolian"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Chicken Mongolian</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Tender chicken in savory mongolian sauce, served with steamed rice
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 1,199</div>
+              </div>
+            </div>
+            <!-- Item 3  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-chowmein.jpg"
+                  alt="Chicken Chowmein"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Chicken Chowmein 
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Best of both — combo plate, great value, perfect for sharing
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 999</div>
+              </div>
+            </div>
+              <!-- Item 4  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-fried-rice.jpg"
+                  alt="Chicken Fried Rice"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Chicken Fried Rice
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Fragrant fried rice with tender chicken pieces and veggies
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 850</div>
+              </div>
+            </div>
+             <!-- Item 5  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/chicken-shashlik.jpg"
+                  alt="Chicken Shashlik"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">
+                  Chicken Shashlik
+                </h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Grilled chicken skewers in spicy shashlik sauce, served with rice
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 1,199</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BROAST -->
+      <section id="broast">
+        <div class="flex items-center gap-4 mb-8">
+          <div>
+            <div class="section-label mb-1">05</div>
+            <h2
+              class="font-bold text-3xl md:text-4xl"
+              style="color: #e8e0d0; letter-spacing: -0.02em"
+            >
+              Broast
+            </h2>
+          </div>
+          <div
+            class="flex-1 h-px"
+            style="
+              background: linear-gradient(
+                90deg,
+                rgba(212, 168, 83, 0.2),
+                transparent
+              );
+            "
+          ></div>
+          <div class="flex gap-2">
+            <button
+              class="carousel-prev"
+              data-carousel="broast"
+              aria-label="Previous"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15,18 9,12 15,6" />
+              </svg>
+            </button>
+            <button
+              class="carousel-next"
+              data-carousel="broast"
+              aria-label="Next"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9,18 15,12 9,6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-broast">
+            <!-- Item 1  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/buffalo-wings.jpg"
+                  alt="Buffalo Wings"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Buffalo Wings</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  4 crispy wings tossed in spicy buffalo sauce, served with ranch
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 810</div>
+              </div>
+            </div>
+            <!-- Item 2  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/honey-chicken-wings.jpg"
+                  alt="Honey Chicken Wings"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Honey Chicken Wings</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  4 crispy wings tossed in spicy honey sauce, served with ranch
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 810</div>
+              </div>
+            </div>
+            <!-- Item 3  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/korean-wings.jpg"
+                  alt="Korean Wings"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Korean Wings</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  4 crispy wings tossed in spicy korean sauce, served with ranch
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 810</div>
+              </div>
+            </div>
+            <!-- Item 4  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/crispy-wings.jpg"
+                  alt="Crispy Wings"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Crispy Wings</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  4 crispy wings tossed in your choice of sauce, served with ranch
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 810</div>
+              </div>
+            </div>
+            <!-- Item 5  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/injected-broast.jpg"
+                  alt="Injected Broast"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Injected Broast</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Injected broast with flavorful marinade, crispy on the outside, juicy on the inside
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 2,399</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SHAKES & DRINKS -->
+
+      <section id="drinks">
+        <div class="flex items-center gap-4 mb-8">
+          <div>
+            <div class="section-label mb-1">06</div>
+            <h2
+              class="font-bold text-3xl md:text-4xl"
+              style="color: #e8e0d0; letter-spacing: -0.02em"
+            >
+              Shakes & Drinks
+            </h2>
+          </div>
+          <div
+            class="flex-1 h-px"
+            style="
+              background: linear-gradient(
+                90deg,
+                rgba(212, 168, 83, 0.2),
+                transparent
+              );
+            "
+          ></div>
+          <div class="flex gap-2">
+            <button
+              class="carousel-prev"
+              data-carousel="drinks"
+              aria-label="Previous"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="15,18 9,12 15,6" />
+              </svg>
+            </button>
+            <button
+              class="carousel-next"
+              data-carousel="drinks"
+              aria-label="Next"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="9,18 15,12 9,6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-drinks">
+            <!-- Item 1  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/aladdin-special-shake.jpg"
+                  alt="Aladdin Special Shake"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Aladdin Special Shake</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Creamy shake with a blend of premium ice cream and secret ingredients
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 560</div>
+              </div>
+            </div>
+            <!-- Item 2  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/banana-shake.jpg"
+                  alt="Banana Shake"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Banana Shake</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Creamy shake made with ripe bananas and premium ice cream
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 360</div>
+              </div>
+            </div>
+
+             <!-- Item 3  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/cappucino.jpg"
+                  alt="Cappucino"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Cappucino</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Rich and creamy cappucino with a perfect balance of espresso and steamed milk
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 499</div>
+              </div>
+            </div>
+
+            <!-- Item 4  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/green-tea.jpg"
+                  alt="Green Tea"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Green Tea</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  Freshly brewed green tea with a hint of natural sweetness
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 70</div>
+              </div>
+            </div>
+
+            <!-- Item 5  -->
+            <div class="carousel-item item-card">
+              <div class="img-wrap">
+                <img
+                  src="images/mint-margarita.jpg"
+                  alt="Mint Margarita"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-white/90 mb-1">Mint Margarita</h3>
+                <p
+                  class="text-xs text-white/40 font-light leading-relaxed mb-3"
+                >
+                  A refreshing blend of mint and lime with a hint of natural sweetness
+                </p>
+                <div class="font-semibold" style="color: #d4a853">Rs. 270</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="border-top: 0.5px solid rgba(212, 168, 83, 0.12)">
+      <div class="max-w-6xl mx-auto px-5 md:px-8 pt-16 pb-8">
+        <!-- Top grid -->
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-14"
+        >
+          <!-- Col 1: Logo + tagline + socials -->
+          <div class="lg:col-span-1">
+            <a href="index.html" class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                style="background: linear-gradient(135deg, #d4a853, #a07c38)"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"
+                    fill="#0c0b09"
+                  />
+                  <circle cx="12" cy="9" r="2.5" fill="#0c0b09" />
+                </svg>
+              </div>
+              <div>
+                <div
+                  class="font-serif font-semibold text-base leading-tight"
+                  style="color: #d4a853"
+                >
+                  Aladdin
+                </div>
+                <div
+                  style="
+                    color: rgba(212, 168, 83, 0.5);
+                    font-size: 9px;
+                    letter-spacing: 0.15em;
+                  "
+                  class="font-light"
+                >
+                  CAFE & CREAM
+                </div>
+              </div>
+            </a>
+            <p class="text-sm text-white/35 font-light leading-relaxed mb-6">
+              Good food. Good mood.<br />Mardan's favourite spot for families,
+              friends & everyone in between.
+            </p>
+            <!-- Socials -->
+            <div class="flex items-center gap-3">
+              <!-- Instagram -->
+              <a
+                href="#"
+                target="_blank"
+                aria-label="Instagram"
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                style="
+                  background: rgba(212, 168, 83, 0.08);
+                  border: 0.5px solid rgba(212, 168, 83, 0.15);
+                "
+                onmouseover="
+                  this.style.background = 'rgba(212,168,83,0.15)';
+                  this.style.borderColor = 'rgba(212,168,83,0.4)';
+                "
+                onmouseout="
+                  this.style.background = 'rgba(212,168,83,0.08)';
+                  this.style.borderColor = 'rgba(212,168,83,0.15)';
+                "
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#d4a853"
+                  stroke-width="1.5"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.5" fill="#d4a853" />
+                </svg>
+              </a>
+              <!-- WhatsApp -->
+              <a
+                href="https://wa.me/923348901413"
+                target="_blank"
+                aria-label="WhatsApp"
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                style="
+                  background: rgba(212, 168, 83, 0.08);
+                  border: 0.5px solid rgba(212, 168, 83, 0.15);
+                "
+                onmouseover="
+                  this.style.background = 'rgba(212,168,83,0.15)';
+                  this.style.borderColor = 'rgba(212,168,83,0.4)';
+                "
+                onmouseout="
+                  this.style.background = 'rgba(212,168,83,0.08)';
+                  this.style.borderColor = 'rgba(212,168,83,0.15)';
+                "
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#d4a853">
+                  <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
+                </svg>
+              </a>
+              <!-- Facebook -->
+              <a
+                href="#"
+                target="_blank"
+                aria-label="Facebook"
+                class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
+                style="
+                  background: rgba(212, 168, 83, 0.08);
+                  border: 0.5px solid rgba(212, 168, 83, 0.15);
+                "
+                onmouseover="
+                  this.style.background = 'rgba(212,168,83,0.15)';
+                  this.style.borderColor = 'rgba(212,168,83,0.4)';
+                "
+                onmouseout="
+                  this.style.background = 'rgba(212,168,83,0.08)';
+                  this.style.borderColor = 'rgba(212,168,83,0.15)';
+                "
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#d4a853">
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Col 2: Quick Links -->
+          <div>
+            <h4
+              class="text-xs font-semibold tracking-widest uppercase mb-5"
+              style="color: #d4a853; letter-spacing: 0.18em"
+            >
+              Quick Links
+            </h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="index.html"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Full Menu</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index.html#deals"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Today's Deals</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index.html#about"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Our Story</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index.html#reviews"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Reviews</a
+                >
+              </li>
+              <li>
+                <a
+                  href="index.html#find-us"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >Find Us</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Menu -->
+          <div>
+            <h4
+              class="text-xs font-semibold tracking-widest uppercase mb-5"
+              style="color: #d4a853; letter-spacing: 0.18em"
+            >
+              Menu
+            </h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="menu.html#steaks"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🥩 Steaks</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#burgers"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🍔 Burgers</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#pizza"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🍕 Pizza</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#chinese"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🍜 Chinese</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#broast"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🍗 Broast</a
+                >
+              </li>
+              <li>
+                <a
+                  href="menu.html#drinks"
+                  class="text-sm text-white/40 font-light hover:text-gold transition-colors duration-200"
+                  >🥤 Shakes & Drinks</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Col 4: Contact -->
+          <div>
+            <h4
+              class="text-xs font-semibold tracking-widest uppercase mb-5"
+              style="color: #d4a853; letter-spacing: 0.18em"
+            >
+              Contact
+            </h4>
+            <ul class="space-y-4">
+              <li class="flex gap-3">
+                <svg
+                  class="flex-shrink-0 mt-0.5"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(212,168,83,0.5)"
+                  stroke-width="1.5"
+                >
+                  <path
+                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                  />
+                  <circle cx="12" cy="9" r="2.5" />
+                </svg>
+                <span class="text-sm text-white/35 font-light leading-relaxed"
+                  >Sahibzada Plaza, Nowshera Road, near Railway Station,
+                  Mardan</span
+                >
+              </li>
+              <li class="flex gap-3">
+                <svg
+                  class="flex-shrink-0 mt-0.5"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(212,168,83,0.5)"
+                  stroke-width="1.5"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"
+                  />
+                </svg>
+                <a
+                  href="https://wa.me/923348901413"
+                  class="text-sm text-white/35 font-light hover:text-gold transition-colors"
+                  >03348901413</a
+                >
+              </li>
+              <li class="flex gap-3">
+                <svg
+                  class="flex-shrink-0 mt-0.5"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(212,168,83,0.5)"
+                  stroke-width="1.5"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <polyline points="12,6 12,12 16,14" />
+                </svg>
+                <div class="text-sm text-white/35 font-light">
+                  Mon–Thu: 12pm – 11pm<br />
+                  Fri–Sun: 12pm – 12am
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div
+          style="
+            height: 0.5px;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(212, 168, 83, 0.15),
+              transparent
+            );
+          "
+          class="mb-8"
+        ></div>
+
+        <!-- Bottom bar -->
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between gap-4"
+        >
+          <p class="text-xs text-white/20 font-light">
+            © 2026 Aladdin Cafe & Cream. All rights reserved.
+          </p>
+          <p class="text-xs text-white/15 font-light">
+            Made with ♥ in Mardan, KPK
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Hamburger
+      const hamBtn = document.getElementById("ham-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      hamBtn.addEventListener("click", () => {
+        hamBtn.classList.toggle("open");
+        mobileMenu.classList.toggle("open");
+      });
+      document.querySelectorAll(".mobile-link").forEach((l) =>
+        l.addEventListener("click", () => {
+          hamBtn.classList.remove("open");
+          mobileMenu.classList.remove("open");
+        }),
+      );
+
+      // Carousels
+      const carousels = {};
+
+      document.querySelectorAll(".carousel-track").forEach((track) => {
+        const id = track.id.replace("carousel-", "");
+        carousels[id] = { track, index: 0 };
+      });
+
+      function getVisible() {
+        return window.innerWidth < 480 ? 1 : window.innerWidth < 768 ? 1 : 4;
+      }
+
+      function updateCarousel(id) {
+        const { track, index } = carousels[id];
+        const items = track.querySelectorAll(".carousel-item");
+        const itemW = items[0].offsetWidth + 16;
+        track.style.transform = `translateX(-${index * itemW}px)`;
+
+        const visible = getVisible();
+        const maxIndex = Math.max(0, items.length - visible);
+        document.querySelector(
+          `[data-carousel="${id}"].carousel-prev`,
+        ).disabled = index === 0;
+        document.querySelector(
+          `[data-carousel="${id}"].carousel-next`,
+        ).disabled = index >= maxIndex;
+      }
+
+      document.querySelectorAll(".carousel-next").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.carousel;
+          const { track } = carousels[id];
+          const items = track.querySelectorAll(".carousel-item");
+          const visible = getVisible();
+          const max = Math.max(0, items.length - visible);
+          carousels[id].index = Math.min(carousels[id].index + 1, max);
+          updateCarousel(id);
+        });
+      });
+
+      document.querySelectorAll(".carousel-prev").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.carousel;
+          carousels[id].index = Math.max(0, carousels[id].index - 1);
+          updateCarousel(id);
+        });
+      });
+
+      // Touch swipe
+      document.querySelectorAll(".carousel-track-wrap").forEach((wrap) => {
+        let startX = 0;
+        wrap.addEventListener(
+          "touchstart",
+          (e) => {
+            startX = e.touches[0].clientX;
+          },
+          { passive: true },
+        );
+        wrap.addEventListener(
+          "touchend",
+          (e) => {
+            const diff = startX - e.changedTouches[0].clientX;
+            const id =
+              wrap.nextElementSibling?.id?.replace("carousel-", "") ||
+              wrap.querySelector(".carousel-track").id.replace("carousel-", "");
+            const trackId = wrap
+              .querySelector(".carousel-track")
+              .id.replace("carousel-", "");
+            if (Math.abs(diff) < 50) return;
+            const { track } = carousels[trackId];
+            const items = track.querySelectorAll(".carousel-item");
+            const visible = getVisible();
+            const max = Math.max(0, items.length - visible);
+            if (diff > 0)
+              carousels[trackId].index = Math.min(
+                carousels[trackId].index + 1,
+                max,
+              );
+            else
+              carousels[trackId].index = Math.max(
+                0,
+                carousels[trackId].index - 1,
+              );
+            updateCarousel(trackId);
+          },
+          { passive: true },
+        );
+      });
+
+      // Init all
+      Object.keys(carousels).forEach(updateCarousel);
+      window.addEventListener("resize", () =>
+        Object.keys(carousels).forEach(updateCarousel),
+      );
+
+      // Category pill active on scroll
+      const pills = document.querySelectorAll(".cat-pill");
+      const sections = [
+        "steaks",
+        "burgers",
+        "pizza",
+        "chinese",
+        "broast",
+        "drinks",
+      ].map((id) => document.getElementById(id));
+      const offset = 64 + 52 + 40;
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          const nearBottom =
+            window.innerHeight + window.scrollY >=
+            document.body.offsetHeight - 100;
+          if (nearBottom) {
+            pills.forEach((p) =>
+              p.classList.toggle("active", p.dataset.target === "drinks"),
+            );
+            return;
+          }
+          let current = sections[0];
+          sections.forEach((s) => {
+            if (s && window.scrollY >= s.offsetTop - offset) current = s;
+          });
+          pills.forEach((p) =>
+            p.classList.toggle("active", p.dataset.target === current?.id),
+          );
+        },
+        { passive: true },
+      );
+
+      pills.forEach((pill) => {
+        pill.addEventListener("click", () => {
+          const target = document.getElementById(pill.dataset.target);
+          if (!target) return;
+          const top =
+            target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: "smooth" });
+        });
+      });
+
+      // Fade up
+      const fadeEls = document.querySelectorAll(".fade-up");
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              obs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -30px 0px" },
+      );
+      fadeEls.forEach((el) => obs.observe(el));
+    </script>
+  </body>
+</html>
